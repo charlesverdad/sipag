@@ -35,4 +35,4 @@ sleep(2)
 print ('heya')
 sleep(3)
 while True:
-	pass
+	sleep(60)
