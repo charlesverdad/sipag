@@ -2,8 +2,11 @@ import threading
 from threading import Thread
 from collections import Counter
 from time import sleep
+import logging
 
-from tasks import log_usage
+from tasks import log_usage, update_storage
+from config import config
+
 usage = Counter()
 
 def continuously_log():
@@ -12,7 +15,7 @@ def continuously_log():
 	while True:
 		with lock:
 			log_usage(counter=usage)
-		sleep(1)
+		sleep(config['log_interval'])
 
 def continuously_save():
 	global usage
@@ -20,7 +23,9 @@ def continuously_save():
 	while True:
 		with lock:
 			print(usage)
-		sleep(5)
+			update_storage(usage)
+			usage = Counter()
+		sleep(config['save_interval'])
 
 logger_thread = Thread(target=continuously_log)
 logger_thread.daemon = True
@@ -34,5 +39,5 @@ print("heyo")
 sleep(2)
 print ('heya')
 sleep(3)
-while True:
+while logger_thread.is_alive() and saver_thread.is_alive():
 	sleep(60)
