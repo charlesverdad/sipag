@@ -3,6 +3,7 @@ from threading import Thread
 from collections import Counter
 from time import sleep
 import logging
+from tendo.singleton import SingleInstance
 
 from tasks import log_usage, update_storage
 from config import config
@@ -26,6 +27,8 @@ def continuously_save():
             update_storage(usage)
             usage = Counter()
         sleep(config['save_interval'])
+
+me = SingleInstance()
 
 logger_thread = Thread(target=continuously_log)
 logger_thread.daemon = True
