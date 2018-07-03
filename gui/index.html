@@ -113,7 +113,7 @@
           return colors
         }
 
-        function reformat_data(data) {
+        function reformat_data(data, limit=10) {
           // formats json string data for doughnut chart
           // data should be a dictionary type, where the keys are the name of the application
           // and the values are seconds.
@@ -122,15 +122,20 @@
           sorted_keys = []
           sorted_values = []
 
-          for (i = 0; i < items.length; i++){
+          if (limit == null){
+            limit = items.length
+          }
+
+          for (i = 0; i < limit; i++){
             sorted_keys.push(items[i][0])
             sorted_values.push(items[i][1])
           }
 
           var formatted_data = {
             datasets: [{
+              label: "Most used applications",
               data: sorted_values,
-              backgroundColor: get_colors(items.length)
+              backgroundColor: get_colors(sorted_values.length)
             }],
 
             labels: sorted_keys
