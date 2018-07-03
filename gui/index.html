@@ -49,6 +49,45 @@
         //     }
         // });
 
+        function pad_num(n){
+          // pads a number with leading zero to make it two digits
+          n = n.toString()
+          if (n.length == 1){
+            return "0" + n
+          } else{
+            return n
+          }
+        }
+
+        function get_app_path(){
+          // returns OS-specific path to the sipag application data folder
+          if (navigator.platform == 'Win32'){
+            return process.env.APPDATA + '\\Likha\\sipag\\'
+          } else {
+            return process.env.HOME + '/.sipag/'
+          }
+        }
+
+        function get_app_data_path(date=null) {
+          // returns path to the json file containing the application data
+          if (date == null){
+            // assume current date
+            d = new Date()
+            fn = d.getFullYear() + "_" + pad_num(d.getMonth()+1) + "_" + pad_num(d.getDay()+1) + "_" + "usage.json"
+            return get_app_path() + fn
+          }
+        }
+
+        function get_data(){
+
+        }
+        // function format_data(data) {
+        // // formats json string data to for doughnut chart
+        // // data should be a dictionary type, where the keys are the name of the application
+        // // and the values are seconds.
+
+        //fetch(get_app_data_path()).then(response => response.json())
+
 
 
         data = {
