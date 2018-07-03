@@ -2,11 +2,11 @@
   <html>
     <head>
       <meta charset="UTF-8">
-      <title>Hello World!</title>
+      <title>Sipag</title>
     </head>
     <body>
 
-      <canvas id="myChart" width="300" height="300"></canvas>
+
 
 
       <script src="./node_modules/chart.js/dist/Chart.js"></script>
@@ -106,11 +106,48 @@
         function get_colors(num){
           // returns an array of random colors with size `num`
           // TODO: instead of randomizing colors, generate one with nice color scheme.
-          colors = []
-          for (i = 0; i < num; i++) {
-            colors.push(getRandomColor())
-          }
+          
+          // colors = []
+          // for (i = 0; i < num; i++) {
+          //   colors.push(getRandomColor())
+          // }
+          // return colors
+
+          // ten colors taken from https://htmlcolorcodes.com/color-chart/
+          colors = [
+            '#F44336',
+            '#9C27B0',
+            '#3F51B5',
+            '#039BE5',
+            '#00ACC1',
+            '#43A047',
+            '#FFB300',
+            '#FB8C00',
+            '#6D4C41',
+            '#546E7A'
+          ]
+
           return colors
+        }
+
+        function regroup_data(data){
+          // combines data from same apps. i.e. "foo.text - Sublime" and "bar.js - Sublime" gets combined.
+          // Uses the dash "-" as delimiter
+          var new_data = {}
+
+          for (key in data){
+            tokens = key.split(' - ');
+            new_key = tokens[tokens.length-1]
+            if (new_data[new_key] == null){
+              new_data[new_key] = data[key]
+            } else{
+              new_data[new_key] += data[key]
+            }
+
+          }
+
+          return new_data
+
         }
 
         function reformat_data(data, limit=10) {
@@ -135,7 +172,8 @@
             datasets: [{
               label: "Most used applications",
               data: sorted_values,
-              backgroundColor: get_colors(sorted_values.length)
+              backgroundColor: get_colors(sorted_values.length),
+              borderWidth: 5
             }],
 
             labels: sorted_keys
@@ -148,7 +186,8 @@
 
         fetch(get_app_data_path())
           .then(response => response.json())
-          .then(jsonResponse => reformat_data(jsonResponse))
+          .then(resp => regroup_data(resp))
+          .then(resp => reformat_data(resp))
           .then(resp => update_chart(resp))
 
         function update_chart(data){
@@ -166,11 +205,12 @@
           });
         }
 
-      </script>
 
-      <h1>Hello World!</h1>
-      We are using node <script>document.write(process.versions.node)</script>,
-      Chrome <script>document.write(process.versions.chrome)</script>,
-      and Electron <script>document.write(process.versions.electron)</script>.
+
+      </script>
+      <div style="text-align:center">
+      <h1>Most used apps</h1>
+      <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
     </body>
   </html>
