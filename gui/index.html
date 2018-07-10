@@ -6,6 +6,11 @@
     </head>
     <body>
 
+      <div style="text-align:center">
+        <h1>Most used apps</h1>
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
+
 
 
 
@@ -146,8 +151,8 @@
 
           }
 
+          console.log(new_data)
           return new_data
-
         }
 
         function reformat_data(data, limit=10) {
@@ -162,6 +167,7 @@
           if (limit == null){
             limit = items.length
           }
+          limit = Math.min(limit, items.length)
 
           for (i = 0; i < limit; i++){
             sorted_keys.push(items[i][0])
@@ -184,15 +190,11 @@
         }
 
 
-        fetch(get_app_data_path())
-          .then(response => response.json())
-          .then(resp => regroup_data(resp))
-          .then(resp => reformat_data(resp))
-          .then(resp => update_chart(resp))
-
-        function update_chart(data){
+        fs = require('fs')
+        function update_chart(chartname){
           // updates the main doughnut chart
-          var ctx = document.getElementById("myChart");
+          data = reformat_data(regroup_data(JSON.parse(fs.readFileSync(get_app_data_path()))))
+          var ctx = document.getElementById(chartname);
           var myPieChart = new Chart(ctx,{
             type: 'doughnut',
             data: data,
@@ -205,12 +207,14 @@
           });
         }
 
+        update_chart("myChart");
+        // Update chart every 10 seconds
+        setInterval(function(){
+          update_chart("myChart");
+        }, 10000)
 
 
       </script>
-      <div style="text-align:center">
-      <h1>Most used apps</h1>
-      <canvas id="myChart" width="400" height="400"></canvas>
-      </div>
+
     </body>
   </html>
