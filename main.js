@@ -3,15 +3,6 @@ var core = require('./sipag-core')
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
-  
-  function logActiveWindow(window){
-    try {
-      console.log("App: " + window.app);
-      console.log("Title: " + window.title);
-    }catch(err) {
-        console.log(err);
-    } 
-  }
 
   function createWindow () {
     // Create the browser window.

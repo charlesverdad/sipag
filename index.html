@@ -53,6 +53,8 @@
         //     }
         // });
 
+        var donut_chart;
+
         function pad_num(n){
           // pads a number with leading zero to make it two digits
           n = n.toString();
@@ -191,11 +193,11 @@
 
 
         fs = require('fs')
-        function update_chart(chartname){
+        function create_chart(chartname){
           // updates the main doughnut chart
           data = reformat_data(regroup_data(JSON.parse(fs.readFileSync(get_app_data_path()))))
           var ctx = document.getElementById(chartname);
-          var myPieChart = new Chart(ctx,{
+          donut_chart = new Chart(ctx,{
             type: 'doughnut',
             data: data,
             options: {
@@ -207,10 +209,16 @@
           });
         }
 
-        update_chart("myChart");
+        function update_chart(){
+          data = reformat_data(regroup_data(JSON.parse(fs.readFileSync(get_app_data_path()))))
+          donut_chart.data = data
+          donut_chart.update(duration=0)  // duration=0 prevents animating the update
+        }
+
+        create_chart("myChart");
         // Update chart every 10 seconds
         setInterval(function(){
-          update_chart("myChart");
+          update_chart();
         }, 10000)
 
 
