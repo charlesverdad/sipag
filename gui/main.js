@@ -1,9 +1,18 @@
 const {app, BrowserWindow} = require('electron')
-  
+var monitor = require('active-window')
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
   
+  function logActiveWindow(window){
+    try {
+      console.log("App: " + window.app);
+      console.log("Title: " + window.title);
+    }catch(err) {
+        console.log(err);
+    } 
+  }
+
   function createWindow () {
     // Create the browser window.
     win = new BrowserWindow({width: 600, height: 600})
@@ -11,10 +20,12 @@ const {app, BrowserWindow} = require('electron')
     // and load the index.html of the app.
     win.loadFile('index.html')
 
-
+    console.log("in here");
+    // monitor.getActiveWindow(logActiveWindow,-1, 1)
+    console.log('out here')
   
     // Open the DevTools.
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
   
     // Emitted when the window is closed.
     win.on('closed', () => {
