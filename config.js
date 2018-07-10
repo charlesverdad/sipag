@@ -12,7 +12,7 @@ function pad_num(n){
 
 function getAppPath(){
   // returns OS-specific path to the sipag application data folder
-  if (navigator.platform == 'Win32'){
+  if (process.platform == 'win32'){
     return process.env.APPDATA + '\\Likha\\sipag\\';
   } else {
     return process.env.HOME + '/.sipag/';
@@ -24,7 +24,7 @@ function getAppDataPath(date=null) {
     // assume current date
     d = new Date();
     fn = d.getFullYear() + "_" + pad_num(d.getMonth()+1) + "_" + pad_num(d.getDay()+1) + "_" + "usage.json";
-    return get_app_path() + fn;
+    return getAppPath() + fn;
   }
 }
 config.appPath = getAppPath();

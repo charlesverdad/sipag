@@ -1,5 +1,5 @@
 const {app, BrowserWindow} = require('electron')
-var monitor = require('active-window')
+var core = require('./sipag-core')
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
   let win
@@ -20,10 +20,6 @@ var monitor = require('active-window')
     // and load the index.html of the app.
     win.loadFile('index.html')
 
-    console.log("in here");
-    // monitor.getActiveWindow(logActiveWindow,-1, 1)
-    console.log('out here')
-  
     // Open the DevTools.
     win.webContents.openDevTools()
   
@@ -40,6 +36,7 @@ var monitor = require('active-window')
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', createWindow)
+  app.on('ready', core.start)
   
   // Quit when all windows are closed.
   app.on('window-all-closed', () => {
