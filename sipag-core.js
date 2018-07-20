@@ -5,27 +5,19 @@ fs = require('fs')
 var counter = {}
 var timer = config.saveInterval
 
-function combineData(filepath){
-  // returns the combined counter data in
-  // `filepath and `counter` global variable
-
-  data = JSON.parse(fs.readFileSync(filepath))
-  for (key in counter){
-    if (data[key]){
-      data[key] += counter[key]
-    } else {
-      data[key] = counter[key]
-    }
+// Initialize counter
+fs.exists(config.getAppDataPath(), function(exists){
+  if (exists){
+    counter = JSON.parse(fs.readFileSync(config.getAppDataPath(), 'utf8'))
+  } else {
+    counter = {}
   }
-  return data
-}
+})
 
 function writeData(filepath){
   // Writes the the global variable `counter`
   // to a json file located at `filepath`
-  data = combineData(filepath)
-  counter = {}
-  fs.writeFile(filepath, JSON.stringify(data), function(err){
+  fs.writeFile(filepath, JSON.stringify(counter), 'utf8', function(err){
     if (err){
       return console.log(err);
     }
