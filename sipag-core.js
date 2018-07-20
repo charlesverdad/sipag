@@ -6,9 +6,9 @@ var counter = {}
 var timer = config.saveInterval
 
 // Initialize counter
-fs.exists(config.getAppDataPath(), function(exists){
+fs.exists(config.dataPath, function(exists){
   if (exists){
-    counter = JSON.parse(fs.readFileSync(config.getAppDataPath(), 'utf8'))
+    counter = JSON.parse(fs.readFileSync(config.dataPath, 'utf8'))
   } else {
     counter = {}
   }
@@ -34,12 +34,9 @@ function logActiveWindow(window){
     counter[key] = 1
   }
 
-  console.log(counter)
-  console.log(config.appPath)
-
   if (timer == config.saveInterval){
     timer = 0
-    writeData(config.getAppDataPath())
+    writeData(config.dataPath)
   }
   timer += 1
 }
