@@ -23,7 +23,6 @@ function getAppDataPath(date=null) {
     // assume current date
     d = new Date();
     fn = d.getFullYear() + "_" + pad_num(d.getMonth()+1) + "_" + pad_num(d.getDate()+1) + "_" + "usage.json";
-    console.log('filename: ' + fn)
     return getAppPath() + fn;
   }
 }
